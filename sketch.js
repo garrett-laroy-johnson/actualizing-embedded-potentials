@@ -11,7 +11,9 @@ let info = {
   ximena: 6
 }
 let txt = {
-  alys: "lorem",
+  alys: ["Across latitudes and how to build a new, with a new collaborative work. Across latitudes and languages.", "beginning. With care and obsessions.", "and letting go of vocabulary constantly.", "possibility."
+    "The unforeseen.", "Okay blurry.", "How to place.", "Now relations.", "And our differences.", "As the as the guiding resource"., "So the work.", "is more documentation.", "Of process.", "Then the.", "Then the outcome.", "The outcome.", "would be.", "Like.", "respectful relationships across.", "by artists from different.", "geopolitical situations.", "and And language that hadn't been seen in advance.", "Let the restrictions that house.", "house abandon our.", "The conventions of outcome focused research proposal to instead focus on."
+  ]
   brandon: "lorem",
   fidelia: "lorem",
   marcel: "lorem",
