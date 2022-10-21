@@ -55,7 +55,6 @@ function setup() {
   strokeWeight(8);
   rectMode(CENTER);
   imageMode(CENTER);
-  //  translate(-width / 2, -height / 2, 0); //moves our drawing origin to the top left corner
 }
 
 function draw() {
