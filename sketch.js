@@ -1,27 +1,3 @@
-let info = {
-  alys: 10,
-  brandon: 5,
-  fidelia: 8,
-  marcel: 10,
-  megan: 5,
-  sejo: 5,
-  shalaka: 10,
-  teoma: 4,
-  thembi: 4,
-  ximena: 6
-}
-let txt = {
-  alys: ["Across latitudes and how to build a new, with a new collaborative work Across latitudes and languages", "beginning With care and obsessions", "and letting go of vocabulary constantly", "possibility", "The unforeseen", "Okay blurry", "How to place", "Now relations", "And our differences", "As the as the guiding resource", "So the work", "is more documentation", "Of process", "Then the", "Then the outcome", "The outcome", "would be", "Like", "respectful relationships across", "by artists from different", "geopolitical situations", "and And language that hadn't been seen in advance", "Let the restrictions that house", "house abandon our", "The conventions of outcome focused research proposal to instead focus on"],
-  brandon: [" "],
-  fidelia: ["i've been thinking about fans a lot in the last couple of days and paper fans, specifically, which is why i'm Holding This now weeks and folds and the lose and all that fun goodness.yeah there's like that to lose quote that's like i'm forever unfolding between two folds and if to perceive as to if to unfold, then I am forever unfolding between the phone or something like that it's from."],
-  marcel: [""],
-  megan: [""],
-  sejo: ["Another project to do as I was saying", "like connecting different like these beautiful rooms and different possible paths between them", "some of them like maybe you could go from one to another direct directly on my way to in order to get to another", "you have to take a longer path"],
-  shalaka: [""],
-  teoma: [""],
-  thembi: [""],
-  ximena: ["i've been dreaming quite a lot with a particular set of colors of sunset so let's say this is a kind of more.", "If there's ethereal.", "So, said, the third area.", "This actually could be the tree.", "This is a physical object that is in location, this is fixing location could be the tree.", "So this is a part of this is this this isn't a location.", "This is something in the imagination.", "This is something that we cannot see.", "And this is the thing that we need to wear this is a wearable, this is a wearable.", "And all these are people who are using that and, of course, I am, you said that I need to do something different, probably i'm doing something similar is quite difficult to to go out but let's say that."]
-}
 let hubs = [];
 let keys;
 let w = window.innerWidth;
@@ -51,7 +27,8 @@ function setup() {
   textSize(txtSize);
   textWrap(WORD);
   noFill();
-  strokeWeight(8);
+  strokeWeight(1);
+  stroke(0, 100);
   rectMode(CENTER);
   imageMode(CENTER);
 }
@@ -60,28 +37,37 @@ function draw() {
   background(255);
   // draw squiggle
   noFill();
-  beginShape();
-  curveVertex(hubs[0].x, hubs[0].y)
-  for (let hub of hubs) {
-    for (let node of hub.nodes) {
-      curveVertex(node.pos.x, node.pos.y);
+  for (s = 0; s < 100; s++) {
+    let ind = 0;
+    beginShape();
+    curveVertex(hubs[0].x, hubs[0].y)
+    for (let hub of hubs) {
+      ind = 0;
+      for (let node of hub.nodes) {
+        let n = noise(hub.index * .1, ind * 0.1, s * 0.1);
+        n = map(n, 0, 1, -200, 200);
+        curveVertex(node.pos.x + n, node.pos.y + n);
+        ind++;
+      }
     }
+    curveVertex(hubs[hubs.length - 1].x, hubs[hubs.length - 1].y)
+    endShape();
   }
-  curveVertex(hubs[hubs.length - 1].x, hubs[hubs.length - 1].y)
-  endShape();
   //show images + text
   for (let hub of hubs) {
     for (let node of hub.nodes) {
+      rectMode(CENTER);
       node.show();
     }
     noStroke();
-    let r = random(4);
+    rectMode(CORNER);
+    let r = random(1);
     if (r < 1) {
       fill(255, 100);
       rect(width / 2, hub.y, width / 2, h / 2)
       fill("black");
       textFont(random(fonts))
-      text(txt[hub.name], width / 2, hub.y, width / 2, hub.y + h)
+      text(txt[hub.name], width / 2, hub.y, width / 2, h / 2)
     } else if (r < 2) {
       fill(255, 100);
       rect(width / 4, hub.y, width / 2, h / 2)
@@ -89,9 +75,9 @@ function draw() {
       text(txt[hub.name], width / 4, hub.y, width / 2, h / 2)
     } else if (r < 3) {
       fill(255, 100);
-      rect(0, hub.y, width / 2, hub.y + h)
+      rect(0, hub.y, width / 2, h / 2)
       fill("black");
-      text(txt[hub.name], 0, hub.y, width / 2, hub.y + h)
+      text(txt[hub.name], 0, hub.y, width / 2, h / 2)
     }
     noLoop();
   }
