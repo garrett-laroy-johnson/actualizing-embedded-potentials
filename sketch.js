@@ -7,7 +7,7 @@ let txtSize = 30;
 let fonts = ["Dawning of a New Day", "Sacramento", "Waiting for Sunrise"];
 let numLines;
 let colors = [];
-let alpha = 100;
+let alpha = 255;
 
 function preload() {
   // num of get keys;
@@ -17,8 +17,8 @@ function preload() {
     let o = new Hub(k, name);
     let numImg = info[name];
     for (p = 0; p < numImg; p++) {
-      let img = loadImage(`${name}/${name}${p+1}.JPG`);
-      let i = new Node(img, o.x, o.y);
+      let img = loadImage(`./${name}/${name}${p+1}.JPG`);
+      let i = new Node(img, o.x, o.y, k, p);
       o.nodes.push(i);
     }
     hubs.push(o);
@@ -42,7 +42,7 @@ function getColor() {
     for (let n of h.nodes) {
       let s = n.img.get(randomGaussian(100, 50), randomGaussian(100, 50));
       let c = color(s[0], s[1], s[2], alpha)
-      colors.push(c);
+      n.color = c;
     }
   }
 }
@@ -56,17 +56,18 @@ function draw() {
     for (let node of hub.nodes) {
       rectMode(CENTER);
       node.show();
+      node.squiggle();
     }
   }
-  noFill();
-  makeLines();
   noStroke();
   rectMode(CORNER);
   for (let hub of hubs) {
-    fill(255, 50);
-    rect(width / 2, hub.y, width / 2, h / 2)
-    fill(0, 200);
-    textFont(random(fonts))
+    let col = hub.nodes[0].color;
+    col[3] = 0.1;
+    fill(255, 100);
+    rect(width / 2, hub.y, width / 2, h / 3)
+    fill(0, 255);
+    textFont(random(fonts));
     text(txt[hub.name], width / 2, hub.y, width / 2, h / 2)
   }
   noLoop();
@@ -82,15 +83,34 @@ class Hub {
   }
 }
 class Node {
-  constructor(img, x, y) {
+  constructor(img, x, y, hi, ni) {
     this.pos = createVector(random(x, x + 500), random(y - 300, y + 600));
     this.img = img;
     this.r = 250;
+    this.color;
+    this.nI = ni;
+    this.hI = hi;
   }
   show() {
     this.edges();
     tint(255, 200)
     image(this.img, this.pos.x, this.pos.y, this.r, this.r)
+  }
+  squiggle() {
+    noFill();
+    strokeWeight(randomGaussian(3, 2));
+    stroke(this.color);
+    beginShape();
+    curveVertex(hubs[this.hI].nodes[this.nI].pos.x, hubs[this.hI].nodes[this.nI].pos.y)
+    for (let h = this.hI; h < hubs.length; h++) {
+      for (let n = this.nI; n < hubs[h].nodes.length; n++) {
+        let no = noise(h * 0.1, n * 0.1);
+        no = map(no, 0, 1, -200, 200);
+        curveVertex(hubs[h].nodes[n].pos.x + no, hubs[h].nodes[n].pos.y + no);
+      }
+    }
+    curveVertex(hubs[hubs.length - 1].x, hubs[hubs.length - 1].y)
+    endShape();
   }
   edges() {
     if (this.pos.x <= 0) {
@@ -98,28 +118,6 @@ class Node {
     }
     if (this.pos.x >= width) {
       this.pos.x = width - 250;
-    }
-  }
-}
-
-function makeLines() {
-  let ind = 0;
-  for (let hI = 0; hI < hubs.length; hI++) {
-    for (let nI = 0; nI < hubs[hI].nodes.length; nI++) {
-      strokeWeight(3, 2);
-      stroke(colors[ind]);
-      beginShape();
-      curveVertex(hubs[hI].nodes[nI].pos.x, hubs[hI].nodes[nI].pos.y)
-      for (let h = hI; h < hubs.length; h++) {
-        for (let n = nI; n < hubs[h].nodes.length; n++) {
-          let no = noise(ind * 0.1, nI * 0.1, hI * 0.1);
-          no = map(no, 0, 1, -200, 200);
-          curveVertex(hubs[h].nodes[n].pos.x + no, hubs[h].nodes[n].pos.y + no);
-        }
-      }
-      curveVertex(hubs[hubs.length - 1].x, hubs[hubs.length - 1].y)
-      endShape();
-      ind++;
     }
   }
 }
