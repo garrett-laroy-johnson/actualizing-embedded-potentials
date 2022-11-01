@@ -17,7 +17,7 @@ function preload() {
     let o = new Hub(k, name);
     let numImg = info[name];
     for (p = 0; p < numImg; p++) {
-      let img = loadImage(`${name}/${name}${p+1}.JPG`);
+      let img = loadImage(`./${name}/${name}${p+1}.JPG`);
       let i = new Node(img, o.x, o.y, k, p);
       o.nodes.push(i);
     }
