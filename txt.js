@@ -2,7 +2,7 @@ let info = {
   alys: 10,
   brandon: 5,
   fidelia: 8,
-  marcel: 10,
+  //marcel: 10,
   megan: 5,
   sejo: 5,
   shalaka: 10,
